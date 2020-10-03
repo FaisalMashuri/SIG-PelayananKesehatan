@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <!-- <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6hy97TrBnR7XT4t7sRyWWcdZXDi_o4Q4&callback=initMap&libraries=&v=weekly"
+      defer
+    ></script> -->
+    <script
+      type="text/javascript"
+      src="http://maps.google.com/maps/api/js?sensor=true"
+    ></script>
+
+    <script type="text/javascript" src="/js/gmaps.js"></script>
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>Document</title>
+    <script type="text/javascript">
+      const data = <%- JSON.stringify(data) %>;
+      let max_lat = -6.8;
+      let min_long = 115.3;
+
+      data.map(res => {
+          if (max_lat > res.x) {
+              max_lat = res.x
+          }
+          if (min_long > res.y) {
+              min_long = res.y
+          }
+      })
+
+      console.log(max_lat, min_long)
+      console.log(data)
+      // data.data.map(res => {
+      //   console.log(res)
+      // })
+
+      let map;
+      $(document).ready(function () {
+
+
+
+          map = new GMaps({
+              el: "#map",
+              lat: max_lat,
+              lng: min_long,
+              zoomControl: true,
+              zoomControlOpt: {
+                  style: "SMALL",
+                  position: "TOP_LEFT",
+              },
+              panControl: false,
+              streetViewControl: true,
+              mapTypeControl: false,
+              overviewMapControl: false,
+          });
+
+          data.map((pelayanan) => {
+
+              map.addMarker({
+                  lat: pelayanan.x,
+                  lng: pelayanan.y,
+                  title: "Marker with InfoWindow",
+                  infoWindow: {
+                      content: `<p>${pelayanan.pelayanan}</p>`,
+                  },
+              });
+          });
+
+          // map.addMarker({
+          //   lat: -12.042,
+          //   lng: -77.028333,
+          //   title: "Marker with InfoWindow",
+          //   infoWindow: {
+          //     content: "<p>HTML Content</p>",
+          //   },
+          // });
+          // map.addMarker({
+          //   lat: -12.051,
+          //   lng: -77.028333,
+          //   title: "Marker with InfoWindow",
+          //   infoWindow: {
+          //     content: "<p>HTML Content</p>",
+          //   },
+          // });
+      });
+    </script>
+  </head>
+
+  <body>
+    <div class="container-fluid map-content-pelayanan-detail">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div id="map"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 mt-5">
+          <h1>Data Pelyanan</h1>
+          <br />
+          <h4>
+            <strong>Pelayanan : </strong>
+            <span><%= data[0].jenis %></span>
+          </h4>
+          <h4>
+            <strong>Lokasi : </strong>
+            <span><%= data[0].keterangan %></span>
+          </h4>
+          <h4>
+            <strong>Keterangan : </strong>
+            <span><%= data[0].pelayanan %></span>
+          </h4>
+        </div>
+
+        <div class="col-md-6 mt-5">
+          <div class="container">
+            <img src="/img/klinik.jpg" alt="" class="img-fluid" />
+          </div>
+        </div>
+      </div>
+      <!-- </div> -->
+    </div>
+
+    <footer>
+      <p class="text-center">@Copyright by FAISAL MASHURI</p>
+    </footer>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

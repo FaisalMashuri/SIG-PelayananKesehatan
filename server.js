@@ -83,4 +83,8 @@ app.get("/logout", (req, res) => {
 app.use("/api/v1/pelayanan", Pelayanan);
 app.use("/api/v1/auth", Auth);
 
+app.use((req, res) => {
+  res.status(404).send("404 Not Found");
+});
+
 app.listen(port, () => console.log(`Server Running on ${port}`));
